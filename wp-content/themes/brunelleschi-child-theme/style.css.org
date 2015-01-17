@@ -1,0 +1,10 @@
+/*
+Theme Name:     Brunelleschi Child Theme
+Description:    
+Author:         phriscage
+Template:       brunelleschi
+
+(optional values you can add: Theme URI, Author URI, Version)
+*/
+
+@import url("../brunelleschi/style.css");

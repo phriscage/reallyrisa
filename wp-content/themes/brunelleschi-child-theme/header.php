@@ -3,16 +3,11 @@
 <!--[if IE 7]>    <html class="no-js ie7 lt-ie9 lt-ie8" <?php echo language_attributes(); ?>> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8 lt-ie9" <?php echo language_attributes(); ?>> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" <?php echo language_attributes(); ?>> <!--<![endif]-->
-	<head><meta name="p:domain_verify" content="7868edbdfe158a6611cf38e2b0499edf" >
+	<head>
 		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<!--<meta name="viewport" content="width=device-width">-->
+		<meta name="viewport" content="width=device-width">
 		<title><?php brunelleschi_title(); ?></title>
-		<?php
-			$x_home=get_bloginfo('home');
-			echo "<link rel=\"shortcut icon\" href=\"$x_home/favicon.ico\" type=\"image/vnd.microsoft.icon\" />\n";
-			echo "<link rel=\"shortcut icon\" href=\"$x_home/favicon.ico\" type=\"image/x-icon\" />\n";
-		?>
 		<link rel="profile" href="http://gmpg.org/xfn/11" />
 		<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 		<style type="text/css"> #wrapper { max-width: <?php echo brunelleschi_options('content-width'); ?>px !important;} </style>
@@ -26,24 +21,52 @@
 	<body <?php body_class(); ?>>
 	<div id="wrapper" class="hfeed container">
 		<header id="header" class="row clearfix">
-			<div style="text-align:center; width:960px; margin-left:auto; margin-right:auto;">
-<img id="Image-Maps_7201302171749003" src="http://www.reallyrisa.com/wp-content/uploads/2013/02/reallyrisa_HEADER.jpg" usemap="#Image-Maps_7201302171749003" border="0" width="960" height="237" alt="" />
-<map id="_Image-Maps_7201302171749003" name="Image-Maps_7201302171749003">
-<area shape="rect" coords="261,199,311,222" href="http://www.reallyrisa.com/category/style/" alt="Style" title="Style"    />
-<area shape="rect" coords="337,198,402,221" href="http://www.reallyrisa.com/category/recipes/" alt="Recipes" title="Recipes"    />
-<area shape="rect" coords="425,199,490,222" href="http://www.reallyrisa.com/category/travel/" alt="Travel" title="Travel"    />
-<area shape="rect" coords="512,199,551,222" href="http://www.reallyrisa.com/category/life/" alt="Life" title="Life"    />
-<area shape="rect" coords="576,199,630,222" href="http://www.reallyrisa.com/about-risa/" alt="About Risa" title="About Risa"    />
-<area shape="rect" coords="654,200,698,223" href="http://www.reallyrisa.com/faqs/" alt="FAQs" title="FAQs"    />
-<area shape="rect" coords="10,10,953,178" href="http://www.reallyrisa.com" alt="Really Risa Home" title="Really Risa Home"    />
-<area shape="rect" coords="958,235,960,237" href="http://www.image-maps.com/index.php?aff=mapped_users_7201302171749003" alt="Image Map" title="Image Map" />
-</map>
-
-</div>
-<script type='text/javascript'>
-(function(a,h,a_,l,o,g,y){ /* dev at 2014-01-20 17:01:02 +0000 */
-window[a_]={c:o,b:g,u:l};var s=a.createElement(h);s.src=l,e=a.getElementsByTagName(h)[0];e.parentNode.insertBefore(s,e);
-})(document,'script','_ahalogy','//w.ahalogy.com/',{client:"68243065972-reallyrisa"});
-</script>
+			<?php if( (brunelleschi_options('header-order') === __('Text on Top','brunelleschi') || brunelleschi_options('header-order') === __('Text on the Left','brunelleschi') || ! brunelleschi_options('header-order')) && !(brunelleschi_options('navigation-position') === __('Nav Above Banner','brunelleschi') && brunelleschi_options('header-order') === __('Text on the Left','brunelleschi')) ) : ?>
+				<hgroup id="branding" class="<?php brunelleschi_branding_class(); ?>">
+					<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>
+				</hgroup>
+			<?php endif; ?>
+			<?php if(!brunelleschi_options('hide-navigation') && brunelleschi_options('navigation-position') === __('Nav Above Banner','brunelleschi')): ?>
+				<div id="access" role="navigation" class="twelvecol last clearfix">
+					<div class="skip-link screen-reader-text"><a href="#content" title="<?php esc_attr_e( 'Skip to content', 'brunelleschi' ); ?>"><?php _e( 'Skip to content', 'brunelleschi' ); ?></a></div>
+					<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
+				</div><!-- #access -->
+			<?php endif; ?>
+			<?php if( brunelleschi_options('navigation-position') === __('Nav Above Banner','brunelleschi') && ( brunelleschi_options('header-order') === __('Text on the Left','brunelleschi') || ! brunelleschi_options('header-order') )) : ?>
+				<hgroup id="branding" class="<?php brunelleschi_branding_class(); ?>">
+					<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>
+				</hgroup>
+			<?php endif; ?>
+			<?php if(brunelleschi_options('use-featured-content')): ?>
+				<?php get_template_part( 'featured', 'content' ); ?>
+			<?php elseif(brunelleschi_options('use-header-image')) : ?>
+				<?php
+				// Check if this is a post or page, if it has a thumbnail, and if it's a big one
+				if ( is_singular() && current_theme_supports( 'post-thumbnails' ) &&
+						has_post_thumbnail( $post->ID ) &&
+						( /* $src, $width, $height */ $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'post-thumbnail' ) ) &&
+						$image[1] >= HEADER_IMAGE_WIDTH ) :
+					// Houston, we have a new header image!
+					echo get_the_post_thumbnail( $post->ID, array( HEADER_IMAGE_WIDTH, HEADER_IMAGE_HEIGHT ), array( 'id' => 'headerimg') );
+				elseif ( get_header_image() ) : ?>
+					<a href="<?php echo home_url( '/' ); ?>" class="<?php brunelleschi_banner_class(); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
+						<img src="<?php header_image(); ?>" alt="" id="headerimg" />
+					</a>
+				<?php endif; ?>	
+			<?php endif; ?>
+			<?php if(brunelleschi_options('header-order') === __('Text on the Bottom','brunelleschi') || brunelleschi_options('header-order') === __('Text on the Right','brunelleschi')) : ?>
+				<hgroup id="branding" class="<?php brunelleschi_branding_class(); ?>">
+					<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>
+				</hgroup>
+			<?php endif; ?>
+			<?php if((brunelleschi_options('navigation-position')) == false || brunelleschi_options('navigation-position') === __('Nav Fixed to Top of Screen','brunelleschi') || !brunelleschi_options('hide-navigation') && brunelleschi_options('navigation-position') === __('Nav Below Banner','brunelleschi')): ?>
+				<div id="access" role="navigation" class="twelvecol last clearfix">
+					<div class="skip-link screen-reader-text"><a href="#content" title="<?php esc_attr_e( 'Skip to content', 'brunelleschi' ); ?>"><?php _e( 'Skip to content', 'brunelleschi' ); ?></a></div>
+					<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
+				</div><!-- #access -->
+			<?php endif; ?>
 		</header><!-- #header -->
 		<div id="container" class="row clearfix">

@@ -6,7 +6,7 @@
 	<head><meta name="p:domain_verify" content="7868edbdfe158a6611cf38e2b0499edf" >
 		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<!--<meta name="viewport" content="width=device-width">-->
+<meta name="viewport" content="width=device-width">
 		<title><?php brunelleschi_title(); ?></title>
 		<?php
 			$x_home=get_bloginfo('home');
